@@ -661,25 +661,29 @@ class Order(ModelObjectType):
     )
     available_shipping_methods = NonNullList(
         ShippingMethod,
-        required=False,
         description="Shipping methods that can be used with this order.",
+        required=False,
         deprecation_reason="Use `shippingMethods`, this field will be removed in 4.0",
     )
     shipping_methods = NonNullList(
-        ShippingMethod, description="Shipping methods related to this order."
+        ShippingMethod,
+        description="Shipping methods related to this order.",
+        required=True,
     )
     available_collection_points = NonNullList(
         Warehouse,
-        required=True,
         description=(
             f"{ADDED_IN_31} Collection points that can be used for this order. "
             f"{PREVIEW_FEATURE}"
         ),
+        required=True,
     )
     invoices = NonNullList(
-        Invoice, required=False, description="List of order invoices."
+        Invoice, description="List of order invoices.", required=True
     )
-    number = graphene.String(description="User-friendly number of an order.")
+    number = graphene.String(
+        description="User-friendly number of an order.", required=True
+    )
     original = graphene.ID(
         description="The ID of the order that was the base for this order."
     )
@@ -693,7 +697,9 @@ class Order(ModelObjectType):
     payment_status_display = graphene.String(
         description="User-friendly payment status.", required=True
     )
-    payments = NonNullList(Payment, description="List of payments for the order.")
+    payments = NonNullList(
+        Payment, description="List of payments for the order.", required=True
+    )
     total = graphene.Field(
         TaxedMoney, description="Total amount of the order.", required=True
     )
@@ -719,18 +725,22 @@ class Order(ModelObjectType):
         deprecation_reason=(f"{DEPRECATED_IN_3X_FIELD} Use `id` instead."),
     )
     voucher = graphene.Field(Voucher)
-    gift_cards = NonNullList(GiftCard, description="List of user gift cards.")
+    gift_cards = NonNullList(
+        GiftCard, description="List of user gift cards.", required=True
+    )
     display_gross_prices = graphene.Boolean(required=True)
     customerNote = graphene.Boolean(required=True)
     customer_note = graphene.String(required=True)
-    weight = graphene.Field(Weight)
+    weight = graphene.Field(Weight, required=True)
     redirect_url = graphene.String()
     subtotal = graphene.Field(
         TaxedMoney,
         description="The sum of line prices not including shipping.",
         required=True,
     )
-    status_display = graphene.String(description="User-friendly order status.")
+    status_display = graphene.String(
+        description="User-friendly order status.", required=True
+    )
     can_finalize = graphene.Boolean(
         description=(
             "Informs whether a draft order can be finalized"
@@ -745,7 +755,9 @@ class Order(ModelObjectType):
         Money, description="Amount captured by payment.", required=True
     )
     events = NonNullList(
-        OrderEvent, description="List of events associated with the order."
+        OrderEvent,
+        description="List of events associated with the order.",
+        required=True,
     )
     total_balance = graphene.Field(
         Money,
@@ -753,7 +765,7 @@ class Order(ModelObjectType):
         required=True,
     )
     user_email = graphene.String(
-        required=False, description="Email address of the customer."
+        description="Email address of the customer.", required=False
     )
     is_shipping_required = graphene.Boolean(
         description="Returns True, if order requires shipping.", required=True
@@ -799,7 +811,7 @@ class Order(ModelObjectType):
     discounts = NonNullList(
         "saleor.graphql.discount.types.OrderDiscount",
         description="List of all discounts assigned to the order.",
-        required=False,
+        required=True,
     )
     errors = NonNullList(
         OrderError,
@@ -1223,17 +1235,18 @@ class Order(ModelObjectType):
         return Promise.all([voucher, channel]).then(wrap_voucher_with_channel_context)
 
     @staticmethod
-    def resolve_language_code_enum(root, _info, **_kwargs):
+    def resolve_language_code_enum(root: models.Order, _info, **_kwargs):
         return LanguageCodeEnum[str_to_enum(root.language_code)]
 
     @staticmethod
-    def resolve_original(root, info, **_kwargs):
+    def resolve_original(root: models.Order, _info, **_kwargs):
         if not root.original_id:
             return None
         return graphene.Node.to_global_id("Order", root.original_id)
 
     @traced_resolver
-    def resolve_errors(root, info, **_kwargs):
+    @staticmethod
+    def resolve_errors(root: models.Order, info, **_kwargs):
         if root.status == OrderStatus.DRAFT:
             country = get_order_country(root)
             try:
