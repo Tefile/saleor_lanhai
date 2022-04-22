@@ -1105,6 +1105,18 @@ enum WebhookEventTypeEnum {
   """A category is deleted."""
   CATEGORY_DELETED
 
+  """A new gift card created."""
+  GIFT_CARD_CREATED
+
+  """A gift card is updated."""
+  GIFT_CARD_UPDATED
+
+  """A gift card is deleted."""
+  GIFT_CARD_DELETED
+
+  """A gift card status is changed."""
+  GIFT_STATUS_CHANGED
+
   """A new order is placed."""
   ORDER_CREATED
 
@@ -1279,6 +1291,18 @@ enum WebhookEventTypeAsyncEnum {
 
   """A category is deleted."""
   CATEGORY_DELETED
+
+  """A new gift card created."""
+  GIFT_CARD_CREATED
+
+  """A gift card is updated."""
+  GIFT_CARD_UPDATED
+
+  """A gift card is deleted."""
+  GIFT_CARD_DELETED
+
+  """A gift card status is changed."""
+  GIFT_STATUS_CHANGED
 
   """A new order is placed."""
   ORDER_CREATED
@@ -1760,6 +1784,10 @@ enum WebhookSampleEventTypeEnum {
   CATEGORY_CREATED
   CATEGORY_UPDATED
   CATEGORY_DELETED
+  GIFT_CARD_CREATED
+  GIFT_CARD_UPDATED
+  GIFT_CARD_DELETED
+  GIFT_STATUS_CHANGED
   ORDER_CREATED
   ORDER_CONFIRMED
   ORDER_FULLY_PAID
@@ -16587,7 +16615,7 @@ type Subscription {
   event: Event
 }
 
-union Event = CategoryCreated | CategoryUpdated | CategoryDeleted | OrderCreated | OrderUpdated | OrderConfirmed | OrderFullyPaid | OrderCancelled | OrderFulfilled | DraftOrderCreated | DraftOrderUpdated | DraftOrderDeleted | ProductCreated | ProductUpdated | ProductDeleted | ProductVariantCreated | ProductVariantUpdated | ProductVariantOutOfStock | ProductVariantBackInStock | ProductVariantDeleted | SaleCreated | SaleUpdated | SaleDeleted | InvoiceRequested | InvoiceDeleted | InvoiceSent | FulfillmentCreated | FulfillmentCanceled | CustomerCreated | CustomerUpdated | CollectionCreated | CollectionUpdated | CollectionDeleted | CheckoutCreated | CheckoutUpdated | PageCreated | PageUpdated | PageDeleted | ShippingPriceCreated | ShippingPriceUpdated | ShippingPriceDeleted | ShippingZoneCreated | ShippingZoneUpdated | ShippingZoneDeleted | TranslationCreated | TranslationUpdated
+union Event = CategoryCreated | CategoryUpdated | CategoryDeleted | GiftCardCreated | GiftCardUpdated | GiftCardDeleted | GiftCardStatusChanged | OrderCreated | OrderUpdated | OrderConfirmed | OrderFullyPaid | OrderCancelled | OrderFulfilled | DraftOrderCreated | DraftOrderUpdated | DraftOrderDeleted | ProductCreated | ProductUpdated | ProductDeleted | ProductVariantCreated | ProductVariantUpdated | ProductVariantOutOfStock | ProductVariantBackInStock | ProductVariantDeleted | SaleCreated | SaleUpdated | SaleDeleted | InvoiceRequested | InvoiceDeleted | InvoiceSent | FulfillmentCreated | FulfillmentCanceled | CustomerCreated | CustomerUpdated | CollectionCreated | CollectionUpdated | CollectionDeleted | CheckoutCreated | CheckoutUpdated | PageCreated | PageUpdated | PageDeleted | ShippingPriceCreated | ShippingPriceUpdated | ShippingPriceDeleted | ShippingZoneCreated | ShippingZoneUpdated | ShippingZoneDeleted | TranslationCreated | TranslationUpdated
 
 type CategoryCreated {
   """
@@ -16608,6 +16636,34 @@ type CategoryDeleted {
   New in Saleor 3.2. Look up a category. Note: this feature is in a preview state and can be subject to changes at later point.
   """
   category: Category
+}
+
+type GiftCardCreated {
+  """
+  New in Saleor 3.2. Look up a gift card. Note: this feature is in a preview state and can be subject to changes at later point.
+  """
+  giftCard: GiftCard
+}
+
+type GiftCardUpdated {
+  """
+  New in Saleor 3.2. Look up a gift card. Note: this feature is in a preview state and can be subject to changes at later point.
+  """
+  giftCard: GiftCard
+}
+
+type GiftCardDeleted {
+  """
+  New in Saleor 3.2. Look up a gift card. Note: this feature is in a preview state and can be subject to changes at later point.
+  """
+  giftCard: GiftCard
+}
+
+type GiftCardStatusChanged {
+  """
+  New in Saleor 3.2. Look up a gift card. Note: this feature is in a preview state and can be subject to changes at later point.
+  """
+  giftCard: GiftCard
 }
 
 type OrderCreated {
