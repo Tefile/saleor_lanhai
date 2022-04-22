@@ -1174,7 +1174,7 @@ class Product(ChannelContextTypeWithMetadata, ModelObjectType):
         def calculate_available_for_purchase(product_channel_listing):
             if not product_channel_listing:
                 return None
-            return product_channel_listing.available_for_purchase
+            return product_channel_listing.available_for_purchase_at
 
         return (
             ProductChannelListingByProductIdAndChannelSlugLoader(info.context)
@@ -1192,7 +1192,7 @@ class Product(ChannelContextTypeWithMetadata, ModelObjectType):
         def calculate_available_for_purchase(product_channel_listing):
             if not product_channel_listing:
                 return None
-            return product_channel_listing.available_for_purchase
+            return product_channel_listing.available_for_purchase_at
 
         return (
             ProductChannelListingByProductIdAndChannelSlugLoader(info.context)
